@@ -1,0 +1,184 @@
+.background {
+    width: 100%;
+    height: 100%;
+    background-image: url(../../public/images/homeBackground.png);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.muteButton {
+    position: relative;
+    width: 5%;
+    top: 0;
+    text-align: left;
+    font-size: 40px;
+    z-index: 5;
+    text-shadow: 0px 0px 4px black;
+}
+
+.muteButton:hover {
+    scale: 1.1;
+    cursor: pointer;
+}
+
+.volumeSlider {
+    position: absolute;
+    top: 5%;
+    left: 7%;
+    width: 35%;
+    z-index: 5;
+}
+
+.snow {
+    width: 100%;
+    height: 100%;
+    background-image: url(../../public/images/snowFall.gif);
+}
+
+.startGameContainer {
+    position: absolute;
+    top: 0;
+    background-image: url(../../public/images/snowGif3.gif);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.startGameButton {
+    position: absolute;
+    bottom: 32%;
+    width: 23%;
+    height: 10%;
+    color: rgb(0, 221, 255);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    text-shadow: 2px 2px 4px rgb(8, 54, 73);
+    text-wrap: nowrap;
+}
+
+.startGameButton:hover {
+    scale: 1.1;
+    cursor: pointer;
+    animation: start-game-pulse 1s linear infinite;
+}
+
+.startGameButtonInitial {
+    pointer-events: none;
+    animation: fade-in-logo 2s linear forwards;
+}
+
+.startGameLogo {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    filter: hue-rotate(180deg);
+    opacity: 0%;
+    animation: fade-in-logo 2s linear forwards;
+}
+
+.enemy1, .enemy2, .enemy3, .enemy4 {
+    position: absolute;
+    cursor: pointer;
+    bottom: 4%;
+    width: 8%;
+    height: 20%;
+    background-image: url(../../public/images/Walkers/WhiteWalker1.gif);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    animation: walk 10s linear forwards;
+}
+
+.enemy2 {
+    background-image: url(../../public/images/Walkers/WhiteWalker2.gif);
+}
+
+.enemy3 {
+    background-image: url(../../public/images/Walkers/WhiteWalker3.gif);
+}
+
+.enemy4 {
+    background-image: url(../../public/images/Walkers/WhiteWalker4.gif);
+}
+
+.enemyDied1 {
+    opacity: 0%;
+    pointer-events: none;
+    background-image: url(../../public/images/Walkers/WhiteWalker1_dead.png);
+    animation: fade-out-death 1s linear;
+}
+
+.enemyDied2 {
+    opacity: 0%;
+    pointer-events: none;
+    background-image: url(../../public/images/Walkers/WhiteWalker2_dead.png);
+    animation: fade-out-death 1s linear;
+}
+
+.enemyDied3 {
+    opacity: 0%;
+    pointer-events: none;
+    background-image: url(../../public/images/Walkers/WhiteWalker3_dead.png);
+    animation: fade-out-death 1s linear;
+}
+
+.enemyDied4 {
+    opacity: 0%;
+    pointer-events: none;
+    background-image: url(../../public/images/Walkers/WhiteWalker4_dead.png);
+    animation: fade-out-death 1s linear;
+}
+
+@keyframes walk {
+    0% {
+        left: -6%;
+    }
+    100% {
+        left: 100%;
+    }
+}
+
+@keyframes fade-out-death {
+    0% {
+        opacity: 100%;
+    }
+    100% {
+        opacity: 0%;
+    }
+}
+
+@keyframes hit-enemy {
+    0% {
+        filter: brightness(40);
+    }
+}
+
+@keyframes fade-in-logo {
+    0% {
+        opacity: 0%;
+        filter: brightness(5);
+    }
+    100% {
+        opacity: 100%;
+    }
+}
+
+@keyframes start-game-pulse {
+    0% {
+        scale: 1;
+    }
+    50% {
+        scale: 1.05;
+    }
+    100% {
+        scale: 1;
+    }
+}

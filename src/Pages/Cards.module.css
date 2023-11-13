@@ -1,0 +1,194 @@
+.cardsContainer {
+    height: 100%;
+    width: 100%;
+    background-color: red;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.cardsSubContainer {
+    width: 100%;
+    position: relative;
+    display: flex;
+    gap: 2%;
+    overflow-x: auto;
+    top: 2%;
+    padding-top: 2%;
+    padding-bottom: 4%;
+    padding-left: 2%;
+    padding-right: 2%;
+}
+
+.cardsSubContainer::-webkit-scrollbar {
+    background-color: rgb(15, 112, 115);
+    height: 5px;
+    border-radius: 10px;
+}
+
+.cardsSubContainer::-webkit-scrollbar-thumb {
+    background-color: aqua;
+    border-radius: 10px;
+}
+
+.commonCards,
+.rareCards,
+.epicCards,
+.legendaryCards {
+    position: relative;
+    height: 70%;
+    width: 96%;
+    background: rgb(156,156,156);
+    background: linear-gradient(180deg, rgba(156,156,156,1) 0%, rgba(255,255,255,1) 50%, rgba(156,156,156,1) 100%);
+    display: flex;
+    flex-direction: row;
+    white-space: nowrap;
+    gap: 2%;
+    padding: 2%;
+    padding-top: 10%;
+    padding-bottom: 3%;
+
+    scrollbar-width: thin;
+    scrollbar-color: rgb(0, 229, 255) rgb(15, 112, 115);
+}
+
+.legendaryCards {
+    background: rgb(155,62,36);
+    background: linear-gradient(180deg, rgba(155,62,36,1) 0%, rgba(255,223,0,1) 50%, rgba(155,62,36,1) 100%);
+}
+
+.epicCards {
+    background: rgb(132,36,155);
+    background: linear-gradient(180deg, rgba(132,36,155,1) 0%, rgba(240,0,255,1) 50%, rgba(132,36,155,1) 100%);
+}
+
+.rareCards {
+    background: rgb(36,72,155);
+    background: linear-gradient(180deg, rgba(36,72,155,1) 0%, rgba(0,223,255,1) 50%, rgba(36,72,155,1) 100%);
+}
+
+.cardDefault {
+    flex: 0 0 22%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url(../../public/images/borderImage.png);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-radius: 5%;
+    height: 100%;
+    background-color: rgb(27, 98, 160);
+    outline: 2px solid rgb(0, 229, 255);
+    box-shadow: 0px 0px 8px black;
+}
+
+.cardImage {
+    width: 90%;
+    height: 90%;
+    border-radius: 4%;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    border: 2px solid rgb(0, 229, 255);
+}
+
+.cardName {
+    position: absolute;
+    bottom: 9%;
+    color: white;
+    text-shadow: 2px 2px 2px black;
+    background-color: rgba(0, 96, 125, 0.701);
+    text-align: center;
+    height: 15%;
+    width: 19%;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.noCards {
+    display: flex;
+    position: relative;
+    top: 5%;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    color: rgb(255, 0, 0);
+    text-shadow: 2px 2px 4px black;
+    justify-content: center;
+    align-items: center;
+    background-image: url(../../public/images/noCardsBackground.png);
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.legendaryTitle,
+.epicTitle,
+.rareTitle,
+.commonTitle {
+    position: absolute;
+    width: 96%;
+    height: 15%;
+    top: 5%;
+    margin: 0px;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    text-align: center;
+    text-shadow: 2px 2px 5px black;
+    border-radius: 12px;
+    box-shadow: 0px 0px 8px black;
+}
+
+.legendaryTitle {
+    color: rgb(255, 242, 0);
+    background-color: rgb(194, 158, 0);
+    border-bottom: 2px solid rgb(229, 255, 0);
+}
+
+.epicTitle {
+    color: rgb(255, 0, 255);
+    background-color: rgb(133, 2, 113);
+    border-bottom: 2px solid rgb(255, 0, 251);
+}
+
+.rareTitle {
+    color: rgb(146, 220, 241);
+    background-color: rgb(33, 86, 142);
+    border-bottom: 2px solid cyan;
+}
+
+.commonTitle {
+    color: white;
+    background-color: rgb(135, 135, 135);
+    border-bottom: 2px solid rgb(255, 255, 255);
+}
+
+.cardsContainer::-webkit-scrollbar-track,
+.legendaryCards::-webkit-scrollbar-track,
+.epicCards::-webkit-scrollbar-track,
+.rareCards::-webkit-scrollbar-track,
+.commonCards::-webkit-scrollbar-track {
+    background-color: rgb(15, 112, 115);
+}
+
+.cardsContainer::-webkit-scrollbar-thumb,
+.legendaryCards::-webkit-scrollbar-thumb,
+.epicCards::-webkit-scrollbar-thumb,
+.rareCards::-webkit-scrollbar-thumb,
+.commonCards::-webkit-scrollbar-thumb {
+    background-color: rgb(0, 229, 255);
+    border-radius: 100px;
+}
+
+.cardsContainer::-webkit-scrollbar {
+    width: 5px;
+}
+
+.cardsContainer::-webkit-scrollbar-thumb {
+    height: 5px;
+    width: 5px;
+}
