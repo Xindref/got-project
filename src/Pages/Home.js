@@ -8,8 +8,8 @@ const Home = () => {
     const {resourceAmount, updateResourceAmount, cardPower, playHomeTheme, stopHomeTheme, changeHomeThemeVolume} = useResource();
     const [enemies, setEnemies] = useState([]);
     const [gameStarted, setGameStarted] = useState(false);
-    const [volumeMuted, setVolumeMuted] = useState(false);
-    const [previousVolume, setPreviousVolume] = useState(0);
+    const [volumeMuted, setVolumeMuted] = useState(localStorage.getItem('Volume Muted') === 'true' || false);
+    const [previousVolume, setPreviousVolume] = useState(localStorage.getItem('Previous Volume') || 0);
 
     const startGame = useRef(false);
     const START_GAME_TEXT_REF = useRef(null);
@@ -141,6 +141,9 @@ const Home = () => {
     }, [enemies, startGame.current])
 
     const handleStartButton = () => {
+        if (!localStorage.getItem('Background Volume')) {
+            localStorage.setItem('Background Volume', .5);
+        }
         setGameStarted(true);
         startGame.current = true;
         playHomeTheme();
@@ -153,13 +156,26 @@ const Home = () => {
     const handleMuteButton = () => {
         if (volumeMuted) {
             changeHomeThemeVolume(previousVolume);
+            localStorage.setItem('Volume Muted', false);
+            localStorage.setItem('Previous Volume', previousVolume);
             document.querySelector('#volumeSlider').value = previousVolume;
         } else {
             setPreviousVolume(parseFloat(localStorage.getItem('Background Volume')) * 10);
+            localStorage.setItem('Previous Volume', (parseFloat(localStorage.getItem('Background Volume')) * 10));
             changeHomeThemeVolume(0);
+            localStorage.setItem('Volume Muted', true);
             document.querySelector('#volumeSlider').value = 0;
         }
         setVolumeMuted(!volumeMuted);
+    }
+
+    const handleVolumeChange = (volume) => {
+        if (volume >= 1) {
+            setVolumeMuted(false);
+        } else {
+            setVolumeMuted(true);
+        }
+        changeHomeThemeVolume(volume);
     }
 
     useEffect(() => {
@@ -177,9 +193,9 @@ const Home = () => {
                 type='range' 
                 max="10"
                 id='volumeSlider'
-                defaultValue={parseFloat(localStorage.getItem('Background Volume')) * 10}
+                defaultValue={localStorage.getItem('Background Volume') ? parseFloat(localStorage.getItem('Background Volume') * 10) : 5}
                 className={styles.volumeSlider}
-                onChange={(event) => changeHomeThemeVolume(event.target.value)}
+                onChange={(event) => handleVolumeChange(event.target.value)}
             ></input>
             {gameStarted ?
             <div className={styles.snow}>

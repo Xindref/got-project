@@ -33,7 +33,7 @@ const Cards = () => {
                 {LEGENDARY_CARDS.length > 0 ? <div className={styles.cardsSubContainer}>
                     {LEGENDARY_CARDS.map((card) => (
                         <div ref={LEGENDARY_NAME_CONTAINER_REF} key={card.name} className={styles.cardDefault}>
-                            <div className={styles.cardImage} style={{backgroundImage: `url(${process.env.PUBLIC_URL}/images/common/${card.name.replace(/\s/g, '')}_common.jpg)`}}></div>
+                            <div className={styles.cardImage} style={{backgroundImage: `url(${process.env.PUBLIC_URL}/images/legendary/${card.name.replace(/\s/g, '')}_legendary.jpg)`}}></div>
                             <p className={styles.cardName} style={{fontSize: LEGENDARY_NAME_SCALING}}>{card.name}</p>
                         </div>
                     ))}
@@ -47,7 +47,7 @@ const Cards = () => {
                 {EPIC_CARDS.length > 0 ? <div className={styles.cardsSubContainer}>
                     {EPIC_CARDS.map((card) => (
                         <div ref={EPIC_NAME_CONTAINER_REF} key={card.name} className={styles.cardDefault}>
-                            <div className={styles.cardImage} style={{backgroundImage: `url(${process.env.PUBLIC_URL}/images/common/${card.name.replace(/\s/g, '')}_common.jpg)`}}></div>
+                            <div className={styles.cardImage} style={{backgroundImage: `url(${process.env.PUBLIC_URL}/images/epic/${card.name.replace(/\s/g, '')}_epic.jpg)`}}></div>
                             <p className={styles.cardName} style={{fontSize: EPIC_NAME_SCALING}}>{card.name}</p>
                         </div>
                     ))}
@@ -61,7 +61,7 @@ const Cards = () => {
                 {RARE_CARDS.length > 0 ? <div className={styles.cardsSubContainer}>
                     {RARE_CARDS.map((card) => (
                         <div ref={RARE_NAME_CONTAINER_REF} key={card.name} className={styles.cardDefault}>
-                            <div className={styles.cardImage} style={{backgroundImage: `url(${process.env.PUBLIC_URL}/images/common/${card.name.replace(/\s/g, '')}_common.jpg)`}}></div>
+                            <div className={styles.cardImage} style={{backgroundImage: `url(${process.env.PUBLIC_URL}/images/rare/${card.name.replace(/\s/g, '')}_rare.jpg)`}}></div>
                             <p className={styles.cardName} style={{fontSize: RARE_NAME_SCALING}}>{card.name}</p>
                         </div>
                     ))}

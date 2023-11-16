@@ -1,10 +1,15 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useResource } from '../Context/ResourceContext';
 import styles from './Gacha.module.css';
 import axios from 'axios';
 import useScalingText from '../Hooks/useScalingText';
 
 const Gacha = () => {
+    const [season1StarkPool, setSeason1StarkPool] = useState(localStorage.getItem('season1StarkPool') || []);
+    const [season2StarkPool, setSeason2StarkPool] = useState(localStorage.getItem('season2StarkPool') || []);
+    const [season3StarkPool, setSeason3StarkPool] = useState(localStorage.getItem('season3StarkPool') || []);
+    const [season4StarkPool, setSeason4StarkPool] = useState(localStorage.getItem('season4StarkPool') || []);
+    const [loadingPools, setLoadingPools] = useState(false);
     const [cardRarity, setCardRarity] = useState("");
     const [cardLoading, setCardLoading] = useState(false);
     const [cardDrawn, setCardDrawn] = useState(false);
@@ -19,45 +24,66 @@ const Gacha = () => {
 
     const houseStarkUrl = 'https://www.anapioficeandfire.com/api/houses/362';
 
-    const houseStarkPull = async (season) => {
-        const characterPool = [];
-    
-        try {
-            const response = await axios.get(houseStarkUrl);
-            if (response.status !== 200) {
-                throw new Error('Failed to retrieve House Stark information.');
-            }
-    
-            const houseInfo = response.data;
-            const seriesCharacters = houseInfo.swornMembers;
-    
-            await Promise.all(seriesCharacters.map(async characterUrl => {
-                try {
-                    const charResponse = await axios.get(characterUrl);
-                    if (charResponse.status === 200 && charResponse.data.tvSeries.includes(season)) {
-                        const charInfo = charResponse.data;
-                        characterPool.push(charInfo.name);
-                    }
-                } catch (error) {
-                    console.error('Error while fetching character data:', error);
+    const houseStarkPull = async () => {
+    if (season1StarkPool.length === 0 || season2StarkPool.length === 0 ||
+        season3StarkPool.length === 0 || season4StarkPool.length === 0) {
+            setLoadingPools(true);
+            try {
+                const response = await axios.get(houseStarkUrl);
+                if (response.status !== 200) {
+                    throw new Error('Failed to retrieve House Stark information.');
                 }
-            }));
-    
-            if (characterPool.length > 0) {
-                const randomIndex = Math.floor(Math.random() * characterPool.length);
-                const randomCharacter = characterPool[randomIndex];
-                return randomCharacter;
-            } else {
-                return 'No characters from House Stark in the specified season.';
-            }
-        } catch (error) {
-            console.error('Error while fetching House Stark information:', error);
-            return 'Failed to retrieve House Stark information.';
-        }
-    };
+        
+                const houseInfo = response.data;
+                const seriesCharacters = houseInfo.swornMembers;
+                const characterPoolS1 = [];
+                const characterPoolS2 = [];
+                const characterPoolS3 = [];
+                const characterPoolS4 = [];
+        
+                await Promise.all(seriesCharacters.map(async characterUrl => {
+                    try {
+                        const charResponse = await axios.get(characterUrl);
+                        if (charResponse.status === 200 && charResponse.data.tvSeries.includes('Season 1')) {
+                            const charInfo = charResponse.data;
+                            characterPoolS1.push(charInfo.name);
+                        }
+                        if (charResponse.status === 200 && charResponse.data.tvSeries.includes('Season 2')) {
+                            const charInfo = charResponse.data;
+                            characterPoolS2.push(charInfo.name);
+                        }
+                        if (charResponse.status === 200 && charResponse.data.tvSeries.includes('Season 3')) {
+                            const charInfo = charResponse.data;
+                            characterPoolS3.push(charInfo.name);
+                        }
+                        if (charResponse.status === 200 && charResponse.data.tvSeries.includes('Season 4')) {
+                            const charInfo = charResponse.data;
+                            characterPoolS4.push(charInfo.name);
+                        }
+                    } catch (error) {
+                        console.error('Error while fetching character data:', error);
+                    }
+                }));
 
+                setSeason1StarkPool(characterPoolS1);
+                setSeason2StarkPool(characterPoolS2);
+                setSeason3StarkPool(characterPoolS3);
+                setSeason4StarkPool(characterPoolS4);
+
+            } catch (error) {
+                console.error('Error while fetching House Stark information:', error);
+                return 'Failed to retrieve House Stark information.';
+            }
+        };
+        setLoadingPools(false);
+    }
+
+    useEffect(() => {
+        houseStarkPull();
+    }, [])
+        
     const gachaPull = async () => {
-        if (resourceAmount - 1000 >= 0) {
+        if (resourceAmount - 1000 >= 0 && !loadingPools) {
             updateResourceAmount(resourceAmount - 1000);
             setCardLoading(true);
             setCardDrawn(false);
@@ -68,20 +94,25 @@ const Gacha = () => {
             const legendaryChance = 5;
 
             let pull = Math.floor((Math.random() * 100) + 1);
+            let cardName;
             let result;
 
             switch (true) {
                 case pull <= legendaryChance:
-                    result = {name: await houseStarkPull('Season 4'), rarity: 'legendary'};
+                    cardName = season4StarkPool[Math.floor(Math.random() * season4StarkPool.length)];
+                    result = {name: cardName, rarity: 'legendary'};
                     break;
                 case pull <= epicChance && pull > legendaryChance:
-                    result = {name: await houseStarkPull('Season 3'), rarity: 'epic'};
+                    cardName = season3StarkPool[Math.floor(Math.random() * season3StarkPool.length)];
+                    result = {name: cardName, rarity: 'epic'};
                     break;
                 case pull <= rareChance && pull > epicChance:
-                    result = {name: await houseStarkPull('Season 2'), rarity: 'rare'};
+                    cardName = season2StarkPool[Math.floor(Math.random() * season2StarkPool.length)];
+                    result = {name: cardName, rarity: 'rare'};
                     break;
                 default:
-                    result = {name: await houseStarkPull('Season 1'), rarity: 'common'};
+                    cardName = season1StarkPool[Math.floor(Math.random() * season1StarkPool.length)];
+                    result = {name: cardName, rarity: 'common'};
                     break;
             }
 
@@ -114,7 +145,6 @@ const Gacha = () => {
             }, 1000);
         }
         else {
-            console.log('Not enough Resource!');
             setCanDraw(true);
         }
     }
@@ -127,9 +157,7 @@ const Gacha = () => {
     }
 
     const handleNotEnoughResourcesAnimationEnd = (event) => {
-        //event.target.classList.remove(styles.notEnoughResources);
         setAnimCount(animCount + 1);
-        console.log(animCount);
         if (animCount === 1) {
             setCanDraw(false);
             setAnimCount(0);
@@ -140,6 +168,7 @@ const Gacha = () => {
     const NOT_ENOUGH_RESOURCES_SCALING = useScalingText(NOT_ENOUGH_RESOURCES_REF, .08);
 
     return (
+        !loadingPools ? 
         <div ref={NOT_ENOUGH_RESOURCES_REF} className={styles["gacha-container"]}>
             <div className={styles.gachaCardEmblem1}></div>
             {cardLoading || !cardDrawn ? 
@@ -159,13 +188,16 @@ const Gacha = () => {
                     <div className={[styles[`${cardRarity}`], styles.gachaResult2].join(' ')}></div>
                         <div ref={NAME_CONTAINER_REF} className={styles.gachaCard}>
                             <p style={{fontSize: CARD_NAME_SCALING}} className={styles.gachaCardTitle}>{cardName}</p>
-                            <div className={styles.gachaCardImage} style={{backgroundImage: `url(${process.env.PUBLIC_URL}/images/common/${cardName.replace(/\s/g, '')}_common.jpg)`}}></div>
+                            <div className={styles.gachaCardImage} style={{backgroundImage: `url(${process.env.PUBLIC_URL}/images/${cardRarity}/${cardName.replace(/\s/g, '')}_${cardRarity}.jpg)`}}></div>
                         </div>
                 </div> : null }
                 {!cardDrawn ? <div ref={NAME_CONTAINER_REF} className={styles.cardContainer} onClick={gachaPull}>
                     <div className={styles.gachaCardBack}></div>
                 </div> : null }
                 {canDraw ? <p className={styles.notEnoughResources} style={{fontSize: NOT_ENOUGH_RESOURCES_SCALING}} onAnimationEnd={(event) => handleNotEnoughResourcesAnimationEnd(event)}>Not Enough Resources!</p> : null}
+        </div> : 
+        <div>
+            <div className={styles.loading}></div>
         </div>
     )
 }
